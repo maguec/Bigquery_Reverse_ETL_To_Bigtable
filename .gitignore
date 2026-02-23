@@ -1,0 +1,9 @@
+tester.tfvars
+.env
+.terraform.lock.hcl
+.terraform/*
+terraform.tfstate
+terraform.tfstate.backup
+.terraform.tfstate.lock.info
+RESULTS/*.json
+*_command
