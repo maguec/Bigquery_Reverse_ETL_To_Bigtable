@@ -1,5 +1,6 @@
 tester.tfvars
 .env
+code/.venv
 .terraform.lock.hcl
 .terraform/*
 terraform.tfstate
