@@ -1,0 +1,32 @@
+SET @@reservation = 'projects/${project_id}/locations/${location}/reservations/bq-reservation-${hex}';
+
+EXPORT DATA OPTIONS (
+  uri = 'https://bigtable.googleapis.com/projects/${project_id}/instances/bt-i-${hex}/appProfiles/bt-profile/tables/bt-t-profiles-${hex}',
+  format = 'CLOUD_BIGTABLE',
+  overwrite = true,
+  auto_create_column_families = true,
+  bigtable_options = """{
+    "columnFamilies": [
+      {
+        "familyId": "profile",
+        "columns": [
+          {"qualifierString": "age", "fieldName": "age"},
+          {"qualifierString": "gender", "fieldName": "gender"},
+          {"qualifierString": "full_name", "fieldName": "full_name"},
+          {"qualifierString": "lat", "fieldName": "latitude"},
+          {"qualifierString": "long", "fieldName": "longitude"}
+        ]
+      }
+    ]
+  }"""
+) AS 
+SELECT
+  CAST(email AS STRING) AS rowkey, -- Using email as the unique key 
+  STRUCT(
+    age, 
+    gender, 
+    CONCAT(first_name, '_', last_name) AS full_name, 
+    latitude, 
+    longitude 
+  ) AS profile
+FROM `bigquery-public-data.thelook_ecommerce.users`;

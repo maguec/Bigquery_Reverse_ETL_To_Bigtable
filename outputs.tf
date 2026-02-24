@@ -3,5 +3,9 @@ output "a-bt-command" {
 }
 
 output "bq-reverse-etl-command" {
-  value = "\n${data.template_file.bq_command.rendered}\n"
+  value = "\n##########################################\n${data.template_file.bq_purchases_command.rendered}\n##########################################\n"
+}
+
+output "bq-reverse-etl-command-2" {
+  value = "\n##########################################\n${data.template_file.bq_profiles_command.rendered}\n##########################################\n"
 }

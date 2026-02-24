@@ -1,0 +1,77 @@
+SET @@reservation = 'projects/${project_id}/locations/${location}/reservations/bq-reservation-${hex}';
+
+EXPORT DATA OPTIONS (
+  uri = 'https://bigtable.googleapis.com/projects/${project_id}/instances/bt-i-${hex}/appProfiles/bt-profile/tables/bt-t-purchases-${hex}',
+  format = 'CLOUD_BIGTABLE',
+  overwrite = true,
+  auto_create_column_families = true, 
+  bigtable_options = """{
+    "columnFamilies": [
+      {
+        "familyId": "purchases",
+        "columns": [
+          {"qualifierString": "accessories", "fieldName": "Accessories"},
+          {"qualifierString": "plus", "fieldName": "Plus"},
+          {"qualifierString": "swim", "fieldName": "Swim"},
+          {"qualifierString": "active", "fieldName": "Active"},
+          {"qualifierString": "socks_hosiery", "fieldName": "Socks_and_Hosiery"},
+          {"qualifierString": "socks", "fieldName": "Socks"},
+          {"qualifierString": "dresses", "fieldName": "Dresses"},
+          {"qualifierString": "pants_capris", "fieldName": "Pants_and_Capris"},
+          {"qualifierString": "fashion_hoodies_sweatshirts", "fieldName": "Fashion_Hoodies_and_Sweatshirts"},
+          {"qualifierString": "skirts", "fieldName": "Skirts"},
+          {"qualifierString": "blazers_jackets", "fieldName": "Blazers_and_Jackets"},
+          {"qualifierString": "suits", "fieldName": "Suits"},
+          {"qualifierString": "tops_tees", "fieldName": "Tops_and_Tees"},
+          {"qualifierString": "sweaters", "fieldName": "Sweaters"},
+          {"qualifierString": "shorts", "fieldName": "Shorts"},
+          {"qualifierString": "jeans", "fieldName": "Jeans"},
+          {"qualifierString": "maternity", "fieldName": "Maternity"},
+          {"qualifierString": "sleep_lounge", "fieldName": "Sleep_and_Lounge"},
+          {"qualifierString": "suits_sport_coats", "fieldName": "Suits_and_Sport_Coats"},
+          {"qualifierString": "pants", "fieldName": "Pants"},
+          {"qualifierString": "intimates", "fieldName": "Intimates"},
+          {"qualifierString": "outerwear_coats", "fieldName": "Outerwear_and_Coats"},
+          {"qualifierString": "underwear", "fieldName": "Underwear"},
+          {"qualifierString": "leggings", "fieldName": "Leggings"},
+          {"qualifierString": "jumpsuits_rompers", "fieldName": "Jumpsuits_and_Rompers"},
+          {"qualifierString": "clothing_sets", "fieldName": "Clothing_Sets"}
+        ]
+      }
+    ]
+  }"""
+) AS 
+WITH base_data AS (
+  SELECT 
+    u.email,
+    REPLACE(REPLACE(p.category, ' ', '_'), '&', 'and') as cat_clean
+  FROM `bigquery-public-data.thelook_ecommerce.users` AS u
+  JOIN `bigquery-public-data.thelook_ecommerce.order_items` AS oi ON u.id = oi.user_id
+  JOIN `bigquery-public-data.thelook_ecommerce.products` AS p ON oi.product_id = p.id
+  WHERE oi.status = 'Complete' 
+),
+pivoted AS (
+  SELECT * FROM base_data
+  PIVOT(
+    COUNT(cat_clean) 
+    FOR cat_clean IN (
+      'Accessories', 'Plus', 'Swim', 'Active', 'Socks_and_Hosiery', 
+      'Socks', 'Dresses', 'Pants_and_Capris', 'Fashion_Hoodies_and_Sweatshirts', 
+      'Skirts', 'Blazers_and_Jackets', 'Suits', 'Tops_and_Tees', 'Sweaters', 
+      'Shorts', 'Jeans', 'Maternity', 'Sleep_and_Lounge', 'Suits_and_Sport_Coats', 
+      'Pants', 'Intimates', 'Outerwear_and_Coats', 'Underwear', 'Leggings', 
+      'Jumpsuits_and_Rompers', 'Clothing_Sets'
+    )
+  )
+)
+SELECT
+  CAST(email AS STRING) AS rowkey,
+  STRUCT(
+    Accessories, Plus, Swim, Active, Socks_and_Hosiery, Socks, Dresses, 
+    Pants_and_Capris, Fashion_Hoodies_and_Sweatshirts, Skirts, 
+    Blazers_and_Jackets, Suits, Tops_and_Tees, Sweaters, Shorts, Jeans, 
+    Maternity, Sleep_and_Lounge, Suits_and_Sport_Coats, Pants, Intimates, 
+    Outerwear_and_Coats, Underwear, Leggings, Jumpsuits_and_Rompers, 
+    Clothing_Sets
+  ) AS purchases
+FROM pivoted;
