@@ -19,7 +19,7 @@ resource "google_compute_firewall" "full_access_for_user" {
 
   allow {
     protocol = "tcp"
-    ports    = ["22", "5432"] # Added 6379 for alloydb/Valkey access
+    ports    = ["22"] # Added 6379 for featurestoredb/Valkey access
   }
 
   source_ranges = ["0.0.0.0/0"]
@@ -37,14 +37,12 @@ resource "google_compute_subnetwork" "psc_subnet" {
   network       = google_compute_network.vpc.id
 }
 
-# Valkey and alloydb use different service classes - this was a huge time sink
-
-resource "google_network_connectivity_service_connection_policy" "psc-alloydb" {
+resource "google_network_connectivity_service_connection_policy" "psc-valkey" {
   project       = var.gcp_project_id
-  name          = "psc-alloydb-${local.suffix}"
+  name          = "psc-valkey-${random_id.server.hex}"
   location      = join("-", slice(split("-", var.gcp_zone), 0, 2))
-  service_class = "google-cloud-alloydb"
-  description   = "PSC Policy for AlloyDB "
+  service_class = "gcp-memorystore"
+  description   = "PSC Policy for Memorystore Valkey"
   network       = "projects/${var.gcp_project_id}/global/networks/${google_compute_network.vpc.name}"
   psc_config {
     subnetworks = [google_compute_subnetwork.psc_subnet.id]

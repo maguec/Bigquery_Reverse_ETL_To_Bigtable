@@ -1,5 +1,6 @@
 resource "google_bigtable_instance" "bt" {
-  name = "bt-i-${local.suffix}"
+  name                = "bt-i-${local.suffix}"
+  deletion_protection = false
 
   cluster {
     cluster_id   = "bt-${local.suffix}"

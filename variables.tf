@@ -24,3 +24,18 @@ variable "suffix" {
   type    = string
   default = ""
 }
+
+variable "machine_type" {
+  type    = string
+  default = "n1-standard-4"
+}
+
+variable "instance_family" {
+  type    = string
+  default = "ubuntu-2204-lts"
+}
+
+variable "instance_project_id" {
+  type    = string
+  default = "ubuntu-os-cloud"
+}
