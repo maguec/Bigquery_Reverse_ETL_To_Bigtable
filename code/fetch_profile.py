@@ -41,7 +41,7 @@ def fetch_from_valkey(ip, port, email):
             json.dumps(
                 {
                     "fetch_time": f"{elapsed_time:.2f} ms",
-                    "soruce": "bigtable",
+                    "source": "bigtable",
                     "profile": profile,
                     "purchases": purchases,
                     "intent": {},
