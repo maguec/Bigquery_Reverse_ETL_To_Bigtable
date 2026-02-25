@@ -68,3 +68,23 @@ uv run fetch_profile.py michaelrush@example.com |jq
 sleep 20
 uv run fetch_profile.py michaelrush@example.com |jq
 ```
+
+### View the raw data in Bigtable
+
+#### Profile
+```bash
+cbt -instance bt-i-${BIGTABLE_SUFFIX} -project ${BIGTABLE_PROJECT} read bt-t-profiles-${BIGTABLE_SUFFIX} count=20
+```
+
+#### Purchases
+```bash
+cbt -instance bt-i-${BIGTABLE_SUFFIX} -project ${BIGTABLE_PROJECT} read bt-t-purchases-${BIGTABLE_SUFFIX} count=20
+```
+
+### View the raw data in BigQuery
+
+#### Profile
+```bash
+bq query 'SELECT * from bigquery-public-data.thelook_ecommerce.order_items WHERE status="Complete" LIMIT 10'
+```
+

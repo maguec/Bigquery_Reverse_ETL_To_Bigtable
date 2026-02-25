@@ -37,3 +37,12 @@ resource "google_project_iam_binding" "project-bq" {
     "serviceAccount:${google_service_account.lab_service_account.email}"
   ]
 }
+
+resource "google_project_iam_binding" "project-bq-job" {
+  project = var.gcp_project_id
+  role    = "roles/bigquery.jobUser"
+
+  members = [
+    "serviceAccount:${google_service_account.lab_service_account.email}"
+  ]
+}
