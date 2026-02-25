@@ -1,6 +1,6 @@
 # Bigtable and BigQuery - Better together
 
-Spin up Bigtable and BigQuery and show how they can work together using Reverse ETL
+Spin up Bigtable, Valkey and BigQuery and show how they can work together using Reverse ETL to provide low latency
 
 ## Usage
 
