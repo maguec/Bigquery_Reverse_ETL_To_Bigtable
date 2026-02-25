@@ -15,6 +15,7 @@ resource "google_compute_instance" "vm" {
     {
       projectid : var.gcp_project_id,
       suffix : local.suffix
+      memorystore_ip : google_memorystore_instance.valkey.endpoints[0].connections[0].psc_auto_connection[0].ip_address
     },
   )
 

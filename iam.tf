@@ -28,3 +28,12 @@ resource "google_project_iam_binding" "project" {
     "serviceAccount:${google_service_account.lab_service_account.email}"
   ]
 }
+
+resource "google_project_iam_binding" "project-bq" {
+  project = var.gcp_project_id
+  role    = "roles/bigquery.dataViewer"
+
+  members = [
+    "serviceAccount:${google_service_account.lab_service_account.email}"
+  ]
+}
