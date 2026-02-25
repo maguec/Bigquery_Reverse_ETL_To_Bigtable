@@ -25,6 +25,7 @@ def fetch_from_valkey(ip, port, email):
                     "purchases": res[1],
                     "intent": res[2],
                     "fetch_time": f"{elapsed_time:.2f} ms",
+                    "source": "valkey",
                 }
             )
         )
@@ -40,6 +41,7 @@ def fetch_from_valkey(ip, port, email):
             json.dumps(
                 {
                     "fetch_time": f"{elapsed_time:.2f} ms",
+                    "soruce": "bigtable",
                     "profile": profile,
                     "purchases": purchases,
                     "intent": {},
