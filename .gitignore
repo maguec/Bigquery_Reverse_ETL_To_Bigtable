@@ -10,3 +10,4 @@ RESULTS/*.json
 *_command
 notes
 query.sh
+code/__pycache__/
