@@ -26,14 +26,14 @@ bq query < bq_purchases_command --use_legacy_sql=false
 vm_ssh_command = "gcloud compute ssh --zone us-west1-a vm-<<SUFFIX>> --project <<PROJECT>>"
 ```
 
-### Clone the repo
+### After SSH-ing into the VM check out the repo for some sample code
 ```bash
 git clone https://github.com/maguec/Bigquery_Reverse_ETL_To_Bigtable.git
 cd Bigquery_Reverse_ETL_To_Bigtable/code
 ```
 
 
-### View and configure a profile
+### View and configure a profile in the VM
 
 #### View an un-cached profile
 ```bash
