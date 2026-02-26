@@ -32,41 +32,54 @@ git clone https://github.com/maguec/Bigquery_Reverse_ETL_To_Bigtable.git
 cd Bigquery_Reverse_ETL_To_Bigtable/code
 ```
 
+### Grab some email addresses that we can use to view provfiles on the VM
+
+#### List 25 addresses
+```bash
+cbt -instance bt-i-${BIGTABLE_SUFFIX} -project ${BIGTABLE_PROJECT} \
+  read bt-t-purchases-${BIGTABLE_SUFFIX} count=25 | awk '/^-------/ {getline; print}'
+```
+
+#### Set one address as an env var
+```bash
+export EMAIL_ADDRESS=`cbt -instance bt-i-${BIGTABLE_SUFFIX} -project ${BIGTABLE_PROJECT} read bt-t-purchases-${BIGTABLE_SUFFIX} count=25 | awk '/^-------/ {getline; print}'|tail -1`
+echo $EMAIL_ADDRESS
+```
 
 ### View and configure a profile in the VM
 
 #### View an un-cached profile
 ```bash
-uv run fetch_profile.py michaelrush@example.com |jq
+uv run fetch_profile.py ${EMAIL_ADDRESS} |jq
 # Note the fetch time
-uv run fetch_profile.py michaelrush@example.com |jq '.fetch_time, .source'
+uv run fetch_profile.py ${EMAIL_ADDRESS} |jq '.fetch_time, .source'
 ```
 
 #### Cache the profile 
 ```bash
-uv run cache_profile.py michaelrush@example.com
+uv run cache_profile.py ${EMAIL_ADDRESS}
 ```
 
 #### View the cached profile
 ```bash
-uv run fetch_profile.py michaelrush@example.com |jq
+uv run fetch_profile.py ${EMAIL_ADDRESS} |jq
 # Note the fetch time
-uv run fetch_profile.py michaelrush@example.com |jq '.fetch_time, .source'
+uv run fetch_profile.py ${EMAIL_ADDRESS} |jq '.fetch_time, .source'
 ```
 
 
 ### Add intent to a profile
 ```bash
-uv run add_intent.py  michaelrush@example.com boots 20
-uv run add_intent.py  michaelrush@example.com sneakers 3600
+uv run add_intent.py  ${EMAIL_ADDRESS} boots 20
+uv run add_intent.py  ${EMAIL_ADDRESS} sneakers 3600
 ```
 
 ### View the profile and note the boots intent get TTL'd out in 20 seconds
 
 ```bash
-uv run fetch_profile.py michaelrush@example.com |jq
+uv run fetch_profile.py ${EMAIL_ADDRESS} |jq
 sleep 20
-uv run fetch_profile.py michaelrush@example.com |jq
+uv run fetch_profile.py ${EMAIL_ADDRESS} |jq
 ```
 
 ### View the raw data in Bigtable
