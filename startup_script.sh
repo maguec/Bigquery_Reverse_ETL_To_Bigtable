@@ -21,3 +21,6 @@ export PATH=$${PATH}:/tmp/google-cloud-sdk/bin
 gcloud components install cbt bq -q
 chgrp -R ubuntu /tmp/google-cloud-sdk/
 find /tmp/google-cloud-sdk/ -type d -exec chmod g+w {} \;
+
+apt update
+apt install -y redis-tools
