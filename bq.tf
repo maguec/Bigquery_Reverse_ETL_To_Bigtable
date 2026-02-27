@@ -77,6 +77,7 @@ resource "google_bigquery_reservation" "reservation" {
 
 resource "google_bigquery_reservation_assignment" "assignment" {
   project     = var.gcp_project_id
+  location    = var.location
   reservation = google_bigquery_reservation.reservation.id
   assignee    = "projects/${var.gcp_project_id}"
   job_type    = "QUERY"

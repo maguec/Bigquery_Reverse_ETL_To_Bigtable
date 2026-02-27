@@ -5,6 +5,14 @@ echo "export MEMORYSTORE_IP=${memorystore_ip}" >> /etc/bash.bashrc
 echo "export MEMORYSTORE_PORT=6379" >> /etc/bash.bashrc
 echo "export PATH=$${PATH}:/tmp/google-cloud-sdk/bin" >> /etc/bash.bashrc
 
+cat << EOF > /tmp/bq_purchases_command.sql
+${bq_purchases_command}
+EOF
+
+cat << EOF2 > /tmp/bq_profiles_command.sql
+${bq_profiles_command}
+EOF2
+
 
 # Install UV
 /usr/bin/curl -LsSf https://astral.sh/uv/install.sh | /usr/bin/sh

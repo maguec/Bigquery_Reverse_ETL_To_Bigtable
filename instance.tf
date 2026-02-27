@@ -14,8 +14,10 @@ resource "google_compute_instance" "vm" {
     "startup_script.sh",
     {
       projectid : var.gcp_project_id,
-      suffix : local.suffix
-      memorystore_ip : google_memorystore_instance.valkey.endpoints[0].connections[0].psc_auto_connection[0].ip_address
+      suffix : local.suffix,
+      memorystore_ip : google_memorystore_instance.valkey.endpoints[0].connections[0].psc_auto_connection[0].ip_address,
+      bq_purchases_command : data.template_file.bq_purchases_command.rendered,
+      bq_profiles_command : data.template_file.bq_profiles_command.rendered
     },
   )
 

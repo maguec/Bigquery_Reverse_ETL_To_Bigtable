@@ -6,14 +6,6 @@ resource "google_bigquery_connection" "fake" {
   cloud_resource {}
 }
 
-#  Add the AlloyDB binding for the BQ service account
-resource "google_project_iam_member" "bqbind" {
-  project    = var.gcp_project_id
-  role       = "roles/alloydb.client"
-  member     = "serviceAccount:${google_bigquery_connection.fake.cloud_resource[0].service_account_id}"
-  depends_on = [google_bigquery_connection.fake]
-}
-
 resource "google_service_account" "lab_service_account" {
   project      = var.gcp_project_id
   account_id   = "account-${local.suffix}"
@@ -22,7 +14,7 @@ resource "google_service_account" "lab_service_account" {
 
 resource "google_project_iam_binding" "project" {
   project = var.gcp_project_id
-  role    = "roles/bigtable.user"
+  role    = "roles/bigtable.admin" # required because we update the BT with the reverse ETL
 
   members = [
     "serviceAccount:${google_service_account.lab_service_account.email}"
@@ -45,4 +37,10 @@ resource "google_project_iam_binding" "project-bq-job" {
   members = [
     "serviceAccount:${google_service_account.lab_service_account.email}"
   ]
+}
+
+resource "google_project_iam_member" "bq_user_role" {
+  project = var.gcp_project_id
+  role    = "roles/bigquery.user" # This includes the 'bigquery.reservations.use' permission
+  member  = "serviceAccount:${google_service_account.lab_service_account.email}"
 }

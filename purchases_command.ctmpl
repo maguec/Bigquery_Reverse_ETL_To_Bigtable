@@ -45,9 +45,9 @@ WITH base_data AS (
   SELECT 
     u.email,
     REPLACE(REPLACE(p.category, ' ', '_'), '&', 'and') as cat_clean
-  FROM `bigquery-public-data.thelook_ecommerce.users` AS u
-  JOIN `bigquery-public-data.thelook_ecommerce.order_items` AS oi ON u.id = oi.user_id
-  JOIN `bigquery-public-data.thelook_ecommerce.products` AS p ON oi.product_id = p.id
+  FROM \`bigquery-public-data.thelook_ecommerce.users\` AS u
+  JOIN \`bigquery-public-data.thelook_ecommerce.order_items\` AS oi ON u.id = oi.user_id
+  JOIN \`bigquery-public-data.thelook_ecommerce.products\` AS p ON oi.product_id = p.id
   WHERE oi.status = 'Complete' 
 ),
 pivoted AS (

@@ -15,12 +15,6 @@ terraform init
 terraform apply -var-file tester.tfvars
 ```
 
-### Run the output commands to populate Bigtable from BQ Reverse ETL queries
-```bash
-bq query < bq_profile_command --use_legacy_sql=false
-bq query < bq_purchases_command --use_legacy_sql=false
-```
-
 ### ssh into the instance from the outputput command that looks like
 ```bash
 vm_ssh_command = "gcloud compute ssh --zone us-west1-a vm-<<SUFFIX>> --project <<PROJECT>>"
@@ -30,6 +24,12 @@ vm_ssh_command = "gcloud compute ssh --zone us-west1-a vm-<<SUFFIX>> --project <
 ```bash
 git clone https://github.com/maguec/Bigquery_Reverse_ETL_To_Bigtable.git
 cd Bigquery_Reverse_ETL_To_Bigtable/code
+```
+
+### Run the output commands to populate Bigtable from BQ Reverse ETL queries
+```bash
+bq query < /tmp/bq_profiles_command.sql --use_legacy_sql=false --location=US
+bq query < /tmp/bq_purchases_command.sql --use_legacy_sql=false --location=US
 ```
 
 ### Grab some email addresses that we can use to view provfiles on the VM
