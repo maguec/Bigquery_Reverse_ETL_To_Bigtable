@@ -101,3 +101,12 @@ cbt -instance bt-i-${BIGTABLE_SUFFIX} -project ${BIGTABLE_PROJECT} read bt-t-pur
 bq query 'SELECT * from bigquery-public-data.thelook_ecommerce.order_items WHERE status="Complete" LIMIT 10'
 ```
 
+
+## Shutdown 
+
+To shutdown all of the resources 
+
+```bash
+terraform destroy -var-file tester.tfvars
+```
+
