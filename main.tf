@@ -7,7 +7,9 @@ resource "random_id" "server" {
 }
 
 locals {
-  suffix = var.suffix == "" ? random_id.server.hex : var.suffix
+  suffix         = var.suffix == "" ? random_id.server.hex : var.suffix
+  external_count = var.enable_external ? 1 : 0
+  nat_count      = var.enable_external ? 0 : 1
 }
 
 resource "google_project_service" "servicenetworking" {

@@ -18,10 +18,11 @@ terraform init
 terraform apply -var-file tester.tfvars
 ```
 
-### ssh into the instance from the outputput command that looks like
+### ssh into the instance from the output command that looks like
 ```bash
 vm_ssh_command = "gcloud compute ssh --zone us-west1-a vm-<<SUFFIX>> --project <<PROJECT>>"
 ```
+*Note:* This command may appear differently depending on your environment
 
 ### After SSH-ing into the VM check out the repo for some sample code
 ```bash

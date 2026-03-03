@@ -30,8 +30,11 @@ resource "google_compute_instance" "vm" {
   network_interface {
     network    = google_compute_network.vpc.name
     subnetwork = google_compute_subnetwork.psc_subnet.id
-    access_config {
-      nat_ip = google_compute_address.static.address
+    dynamic "access_config" {
+      for_each = var.enable_external ? [1] : []
+      content {
+        nat_ip = google_compute_address.static[0].address
+      }
     }
   }
 

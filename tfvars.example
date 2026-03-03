@@ -1,3 +1,4 @@
 gcp_project_id = "myproject"
 gcp_zone       = "us-west1-a"
 # suffix       = "mysuffix"
+# enable_external   = false

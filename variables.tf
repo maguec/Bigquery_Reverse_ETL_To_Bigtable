@@ -25,6 +25,11 @@ variable "suffix" {
   default = ""
 }
 
+variable "enable_external" {
+  type    = bool
+  default = true
+}
+
 variable "machine_type" {
   type    = string
   default = "n1-standard-4"
