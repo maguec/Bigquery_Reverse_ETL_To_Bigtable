@@ -44,3 +44,10 @@ resource "google_project_iam_member" "bq_user_role" {
   role    = "roles/bigquery.user" # This includes the 'bigquery.reservations.use' permission
   member  = "serviceAccount:${google_service_account.lab_service_account.email}"
 }
+
+resource "google_project_iam_binding" "alloydb_role" {
+  project = var.gcp_project_id
+  role    = "roles/alloydb.client"
+  members = ["serviceAccount:service-${data.google_project.project.project_id}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"]
+}
+
