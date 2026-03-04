@@ -76,14 +76,15 @@ def fetch_from_bigtable(email, project_id, suffix):
     }
 
 
-def get_profile_with_fallback(ip, port, email, project_id, suffix):
+def get_profile_with_fallback(ip, port, email, project_id, suffix, quiet=False):
     """Tries fetching from Valkey first, falling back to Bigtable if empty."""
     result = fetch_from_valkey(ip, port, email)
 
     if result is None:
         result = fetch_from_bigtable(email, project_id, suffix)
 
-    print(json.dumps(result))
+    if not quiet:
+        print(json.dumps(result))
     return result
 
 
@@ -97,9 +98,10 @@ def write_dict_to_valkey(ip, port, key_name, data_dict):
     rc.hset(name=key_name, mapping={k: str(v) for k, v in data_dict.items()})
 
 
-def cache_profile_to_valkey(ip, port, email, project_id, suffix):
+def cache_profile_to_valkey(ip, port, email, project_id, suffix, quiet=False):
     """Fetches profile and purchases from Bigtable and writes them to Valkey."""
-    print("Fetching profile for user: {}".format(email))
+    if not quiet:
+        print("Fetching profile for user: {}".format(email))
 
     profile = _get_user_info(email, project_id, suffix, "profiles")
     purchases = _get_user_info(email, project_id, suffix, "purchases")
@@ -108,11 +110,12 @@ def cache_profile_to_valkey(ip, port, email, project_id, suffix):
         print(f"No profile found for email: {email}")
         return
 
-    print("Profile:")
-    print(json.dumps(profile))
-    print("Purchases:")
-    print(json.dumps(purchases))
-    print("Writing user data to Memorystore")
+    if not quiet:
+        print("Profile:")
+        print(json.dumps(profile))
+        print("Purchases:")
+        print(json.dumps(purchases))
+        print("Writing user data to Memorystore")
 
     if purchases:
         write_dict_to_valkey(

@@ -105,6 +105,18 @@ cbt -instance bt-i-${BIGTABLE_SUFFIX} -project ${BIGTABLE_PROJECT} read bt-t-pur
 bq query 'SELECT * from bigquery-public-data.thelook_ecommerce.order_items WHERE status="Complete" LIMIT 10'
 ```
 
+## Let's do a benchmark comparision
+
+### Dump 100 emails to a file
+```bash
+cbt -instance bt-i-${BIGTABLE_SUFFIX} -project ${BIGTABLE_PROJECT} \
+  read bt-t-purchases-${BIGTABLE_SUFFIX} count=100 | awk '/^-------/ {getline; print}' > /tmp/emails
+```
+
+### Run a benchmark
+```bash
+uv run load_test.py /tmp/emails
+```
 
 ## Shutdown 
 
