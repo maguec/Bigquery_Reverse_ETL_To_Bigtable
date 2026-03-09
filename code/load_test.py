@@ -1,15 +1,11 @@
 import sys
-import os
-from profile_utils import get_profile_with_fallback, cache_profile_to_valkey
+from profile_utils import FeatureStore
 from alive_progress import alive_bar
 from tabulate import tabulate
 import numpy as np
 
 if __name__ == "__main__":
-    project_id = os.getenv("BIGTABLE_PROJECT", "mague-tf")
-    suffix = os.getenv("BIGTABLE_SUFFIX", "playnice")
-    memorystore_ip = os.getenv("MEMORYSTORE_IP", "192.168.68.111")
-    memorystore_port = os.getenv("MEMORYSTORE_PORT", "30001")
+    fs = FeatureStore()
 
     if len(sys.argv) < 2:
         print("Usage: uv run load_test.py <file>")
@@ -23,19 +19,13 @@ if __name__ == "__main__":
 
     with alive_bar(len(emails)) as bar:
         for x in emails:
-            bt = get_profile_with_fallback(
-                memorystore_ip, memorystore_port, x, project_id, suffix, quiet=True
-            )
-            ms = cache_profile_to_valkey(
-                memorystore_ip, memorystore_port, x, project_id, suffix, quiet=True
-            )
+            bt = fs.get_profile_with_fallback(x, quiet=True)
+            ms = fs.cache_profile_to_valkey(x, quiet=True)
             if bt["source"] == "bigtable":
                 btstats = np.append(btstats, float(bt["fetch_time"].split()[0]))
             else:
                 msstats = np.append(msstats, float(bt["fetch_time"].split()[0]))
-            bt2 = get_profile_with_fallback(
-                memorystore_ip, memorystore_port, x, project_id, suffix, quiet=True
-            )
+            bt2 = fs.get_profile_with_fallback(x, quiet=True)
             if bt2["source"] == "bigtable":
                 btstats = np.append(btstats, float(bt2["fetch_time"].split()[0]))
             else:
