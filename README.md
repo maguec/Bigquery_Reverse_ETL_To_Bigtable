@@ -5,18 +5,13 @@ Spin up Bigtable, Valkey and BigQuery and show how they can work together using 
 
 ![architecture](./docs/diagram.png)
 
-## Usage
 
-### Create a variables file
-```bash
-cp tfvars.example tester.tfvars
-```
+### Self hosted
 
-### Initialize and apply
-```bash
-terraform init
-terraform apply -var-file tester.tfvars
-```
+[Using Terraform to self host](/Terraform/README.md)
+
+Otherwise, skip this and proceed from the SSH below
+
 
 ### ssh into the instance from the output command that looks like
 ```bash
@@ -131,13 +126,5 @@ uv run load_test.py /tmp/emails
 ├────────┼─────────────────┼────────────────────┤
 │ p99    │        124.393  │             0.8706 │
 ╘════════╧═════════════════╧════════════════════╛
-```
-
-## Shutdown 
-
-To shutdown all of the resources 
-
-```bash
-terraform destroy -var-file tester.tfvars
 ```
 

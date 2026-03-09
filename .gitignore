@@ -1,11 +1,11 @@
-tester.tfvars
+Terraform/tester.tfvars
 .env
 code/.venv
-.terraform.lock.hcl
-.terraform/*
-terraform.tfstate
-terraform.tfstate.backup
-.terraform.tfstate.lock.info
+Terraform/.terraform.lock.hcl
+Terraform/.terraform/*
+Terraform/terraform.tfstate
+Terraform/terraform.tfstate.backup
+Terraform/.terraform.tfstate.lock.info
 RESULTS/*.json
 *_command
 notes
