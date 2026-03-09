@@ -3,6 +3,12 @@ variable "gcp_project_id" {
   description = "The GCP project ID to apply this config to."
 }
 
+variable "gcp_region" {
+  type        = string
+  description = "The GCP region to apply this config to - only for labs"
+  default     = "us-west1"
+}
+
 variable "gcp_zone" {
   type        = string
   description = "The GCP zone to apply this config to."
@@ -32,7 +38,7 @@ variable "enable_external" {
 
 variable "machine_type" {
   type    = string
-  default = "n1-standard-4"
+  default = "c4-standard-2"
 }
 
 variable "instance_family" {

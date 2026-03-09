@@ -2,7 +2,7 @@ default: bundletf
 
 bundletf:
 	rm -f Terraform.zip
-	zip --include '*.tf' '*.sh' '*.yaml' -rj  Terraform.zip  Terraform/
+	zip --include '*.tf' '*.sh' '*.yaml' '*.ctmpl' '*.csv' -rj  Terraform.zip  Terraform/
 
 
 docs:

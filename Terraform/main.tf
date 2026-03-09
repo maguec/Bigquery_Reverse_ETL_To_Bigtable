@@ -39,3 +39,10 @@ resource "google_project_service" "bqconnection" {
   disable_dependent_services = var.disable_apis
   disable_on_destroy         = var.disable_apis
 }
+
+resource "google_project_service" "memorystore" {
+  project                    = var.gcp_project_id
+  service                    = "memorystore.googleapis.com"
+  disable_dependent_services = var.disable_apis
+  disable_on_destroy         = var.disable_apis
+}

@@ -7,7 +7,7 @@ resource "google_storage_bucket" "bqdata" {
 
 resource "google_storage_bucket_object" "csv_upload" {
   name   = "data.csv"
-  source = "data/local_data_file.csv"
+  source = "local_data_file.csv"
   bucket = google_storage_bucket.bqdata.name
 }
 
