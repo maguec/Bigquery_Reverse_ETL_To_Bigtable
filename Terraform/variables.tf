@@ -38,7 +38,7 @@ variable "enable_external" {
 
 variable "machine_type" {
   type    = string
-  default = "c4-standard-2"
+  default = "t2d-standard-2"
 }
 
 variable "instance_family" {
